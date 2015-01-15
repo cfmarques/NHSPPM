@@ -1,4 +1,4 @@
-package Exercicio1Semana;
+package pmediana;
 
 import java.util.ArrayList;
 

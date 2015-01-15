@@ -1,6 +1,8 @@
-package Exercicio1Semana;
+
 
 import java.util.Scanner;
+
+import pmediana.PMediana;
 
 public class Principal {
 	/** Declares variables
