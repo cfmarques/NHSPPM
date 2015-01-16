@@ -1,22 +1,44 @@
 
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import pmediana.PMediana;
+import solucoes.Solucao;
 
 public class Principal {
+	private static Scanner entrada = new Scanner(System.in);
+	private static String[] classesSolucoes = {"SolucaoFM", "SolucaoNC"};
+	private static ArrayList<Solucao> solucoes = new ArrayList<Solucao>();
+	
 	/** Declares variables
 	 *  @PM - variable PMediana
 	 *  @vetVertices - ArrayList Vertices
 	 */
-	private static Scanner entrada = new Scanner(System.in);
 	
 	public static void main (String args[]){
+		for(String solucao : classesSolucoes){
+			try {
+				Solucao objSolucao = (Solucao)Class.forName(solucao).newInstance();
+				objSolucao.gerarSolucao();
+				
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}  
+		}
+		
 		PMediana PM = new PMediana();
 
 		//informarArquivo(PM);
 		PM.carregarCoordenadas("D:\\Documents\\Trabalhos e Projetos\\Projetos Vinculados ao IFES\\Projeto AG PBIC\\Arquivos de Posicionamentos Aleatorios\\818.txt");
-		informarQntMedianasDesejadas(PM);
+		//informarQntMedianasDesejadas(PM);
 		
 		PM.distribuirMedianasIniciais();
 		
@@ -43,14 +65,16 @@ public class Principal {
 		}
 	}
 	
-	public static void informarArquivo(PMediana PM){
-		PM.limparVetVertice();
-		PM.limparVetMediana();
-		System.out.println("Informe o arquivo de coordenadas (Ex.: \"C:/Arquivos de Programas/teste.txt\"): ");
-		PM.carregarCoordenadas(entrada.nextLine());
-		System.out.println("\n");
+	public static void gerarRelatorio(){
+		
 	}
 	
+	public static void informarArquivo(){
+		System.out.println("Informe o arquivo de coordenadas (Ex.: \"C:/Arquivos de Programas/teste.txt\"): ");
+		entrada.nextLine();
+	}
+	
+	/*
 	public static void informarQntMedianasDesejadas(PMediana PM){
 		boolean condNumMedDesejada = true;
 
@@ -71,4 +95,5 @@ public class Principal {
 			System.out.println("\n");
 		}
 	}
+	*/
 }
