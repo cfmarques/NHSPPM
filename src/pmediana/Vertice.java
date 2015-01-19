@@ -3,13 +3,13 @@ package pmediana;
 import java.util.ArrayList;
 
 public class Vertice {
-	/** Declaração de variáveis
-	 *  @id - Variável de identificação
-	 *  @x - Variável int que representa a posição x em um plano cartesiano
-	 *  @y - Variável int que representa a posição y em um plano cartesiano
-	 *  @dist - Variável int que representa a distância da vertice até a mediana
-	 *  @ned - Variável boolean que representa se aquela vertice é ou não mediana
-	 *  @refMelhor - Variável Vertice que representa a mediana a qual ele está conectado
+	/** Declaraï¿½ï¿½o de variï¿½veis
+	 *  @id - Variï¿½vel de identificaï¿½ï¿½o
+	 *  @x - Variï¿½vel int que representa a posiï¿½ï¿½o x em um plano cartesiano
+	 *  @y - Variï¿½vel int que representa a posiï¿½ï¿½o y em um plano cartesiano
+	 *  @dist - Variï¿½vel int que representa a distï¿½ncia da vertice atï¿½ a mediana
+	 *  @ned - Variï¿½vel boolean que representa se aquela vertice ï¿½ ou nï¿½o mediana
+	 *  @refMelhor - Variï¿½vel Vertice que representa a mediana a qual ele estï¿½ conectado
 	 */
 	private int id, x, y;
 	private double dist;
@@ -58,6 +58,8 @@ public class Vertice {
 	}
 	
 	public void escolheMediana(ArrayList<Mediana> vetMediana){
+		System.out.println("Quantidade de medianas: " + vetMediana.size());
+		
 		double distancia = 0, distanciaTemp = 0;
 		Vertice refMelhor = null;
 		Mediana medianaEscolhida = null;

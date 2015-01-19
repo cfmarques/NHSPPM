@@ -1,14 +1,10 @@
-
-
 import java.util.ArrayList;
-import java.util.Scanner;
 
-import pmediana.PMediana;
-import solucoes.Solucao;
+import pmediana.Mediana;
+import solucoes.*;
 
 public class Principal {
-	private static Scanner entrada = new Scanner(System.in);
-	private static String[] classesSolucoes = {"SolucaoFM", "SolucaoNC"};
+	private static String[] classesSolucoes = {"SolucaoFM"/*, "SolucaoNC"*/};
 	private static ArrayList<Solucao> solucoes = new ArrayList<Solucao>();
 	
 	/** Declares variables
@@ -16,12 +12,16 @@ public class Principal {
 	 *  @vetVertices - ArrayList Vertices
 	 */
 	
+	
+	
 	public static void main (String args[]){
+		/*
 		for(String solucao : classesSolucoes){
 			try {
 				Solucao objSolucao = (Solucao)Class.forName(solucao).newInstance();
-				objSolucao.gerarSolucao();
+				objSolucao.start();
 				
+				solucoes.add(objSolucao);
 			} catch (InstantiationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -33,6 +33,31 @@ public class Principal {
 				e.printStackTrace();
 			}  
 		}
+		*/
+		Solucao objSolucao = new SolucaoFM();
+		
+		int[] medianasDesejadas1 = {108, 50, 20, 10, 5};
+		objSolucao.setMedianasDesejadas(324, medianasDesejadas1);
+		
+		int[] medianasDesejadas2 = {272, 150, 100, 50, 20, 10, 5};
+		objSolucao.setMedianasDesejadas(818, medianasDesejadas2);
+		
+		objSolucao.setVariacao("Menor");
+		
+		objSolucao.start();
+		
+		System.out.println("Foram encontrado " + objSolucao.getResultado().size() + " resultados");
+		
+		for(int i = 1; i <= objSolucao.getResultado().size(); i++){
+			System.out.println("Foram encontrados no " + i + "Âº resultado " + objSolucao.getResultado().get(i - 1).size() + " resultados");
+			
+			for(int j = 1; j <= objSolucao.getResultado().get(i - 1).size(); j++){
+				System.out.println("Fitness: " + objSolucao.getResultado().get(i - 1).get(j - 1).getFitness());
+				System.out.println("NÃºmero de medianas: " + objSolucao.getResultado().get(i - 1).get(j - 1).getNumMed());
+			}
+		}
+		
+		/*
 		
 		PMediana PM = new PMediana();
 
@@ -42,25 +67,25 @@ public class Principal {
 		
 		PM.distribuirMedianasIniciais();
 		
-		System.out.println("Número de medianas: " + PM.getNumMed() + "\t" + "Número de medianas desejadas: " + PM.getMedDesejado());
+		System.out.println("Nï¿½mero de medianas: " + PM.getNumMed() + "\t" + "Nï¿½mero de medianas desejadas: " + PM.getMedDesejado());
 				
-		System.out.println("\n\n\nGerando solução aleatória... Aguarde!\n");
+		System.out.println("\n\n\nGerando soluï¿½ï¿½o aleatï¿½ria... Aguarde!\n");
 		
 		System.out.print("\n\n\n\n\n");
 		
 		while(PM.getNumMed() != PM.getMedDesejado()){
 			PM.gerarSolucao();
 			
-			System.out.println("Número de medianas: " + PM.getNumMed() + "\t" + "Número de medianas desejadas: " + PM.getMedDesejado());
-			System.out.println("Solução aleatória gerada! FITNESS da P-Mediana: " + PM.getFitness());
+			System.out.println("Nï¿½mero de medianas: " + PM.getNumMed() + "\t" + "Nï¿½mero de medianas desejadas: " + PM.getMedDesejado());
+			System.out.println("Soluï¿½ï¿½o aleatï¿½ria gerada! FITNESS da P-Mediana: " + PM.getFitness());
 			
 			
 			if(PM.getNumMed() == 5){
-				System.out.println("\n\n\nGerando solução aleatória... Aguarde!\n");
+				System.out.println("\n\n\nGerando soluï¿½ï¿½o aleatï¿½ria... Aguarde!\n");
 				
 				PM.exibirMedianas();
 				
-				System.out.println("Solução aleatória gerada! FITNESS da P-Mediana: " + PM.getFitness());
+				System.out.println("Soluï¿½ï¿½o aleatï¿½ria gerada! FITNESS da P-Mediana: " + PM.getFitness());
 			}			
 		}
 	}
@@ -88,12 +113,13 @@ public class Principal {
 				PM.setMedDesejado(numMedDesejadas);
 				condNumMedDesejada = false;
 			}else {
-				System.out.println(	"Valor de medianas inválidas, por favor informe um valor válido! "
-						+			"\nNúmero de vertices: " + PM.getVetVertice().size() +"\tNúmero máximo de medianas permitidas: " + PM.getVetVertice().size());
+				System.out.println(	"Valor de medianas invï¿½lidas, por favor informe um valor vï¿½lido! "
+						+			"\nNï¿½mero de vertices: " + PM.getVetVertice().size() +"\tNï¿½mero mï¿½ximo de medianas permitidas: " + PM.getVetVertice().size());
 			}
 			
 			System.out.println("\n");
 		}
 	}
 	*/
+	}
 }

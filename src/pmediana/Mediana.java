@@ -3,32 +3,32 @@ package pmediana;
 import java.util.ArrayList;
 
 public class Mediana {
-	/** Declaração de variáveis
-	 *  @vertice - Variável Vertice
-	 *  @vetVertices - ArrayList de Vertices
-	 *  @fitnessLocal - Variável double que representa a potuação da mediana
-	 *  @numConectados - Variável int que representa o número de conectados na mediana
+	/** Declaraï¿½ï¿½o de variï¿½veis
+	 *  @vertice - Variï¿½vel Vertice
+	 *  @verticess - ArrayList de Vertices
+	 *  @fitness - Variï¿½vel double que representa a potuaï¿½ï¿½o da mediana
+	 *  @numConectados - Variï¿½vel int que representa o nï¿½mero de conectados na mediana
 	 */
 	private Vertice vertice = new Vertice();
-	private ArrayList<Vertice> vetVertice = new ArrayList<Vertice>();
+	private ArrayList<Vertice> vertices = new ArrayList<Vertice>();
 	private int numConectados;
-	private double fitnessLocal, fitnessLocalMedio;
+	private double fitness;
 	
 	public Mediana (Vertice vertice){
-		this.fitnessLocal = 0;
+		this.fitness = 0;
 		this.numConectados = 0;
 		this.vertice = vertice;
-		this.vetVertice.clear();
+		this.vertices.clear();
 	}
 	
 	public String toString(){
 		String retorno;
-		retorno = "Vertice: " + this.vertice.getId() + "\tFitness Local: " + this.fitnessLocal + "\tFitness Local Médio: " + this.fitnessLocalMedio + "\tmedX: " + this.vertice.getX() + "\tmedY: " + this.vertice.getY() + "\n"
+		retorno = "Vertice: " + this.vertice.getId() + "\tFitness Local: " + this.fitness + "\tFitness Local MÃ©dio: " + (this.fitness / this.numConectados) + "\tmedX: " + this.vertice.getX() + "\tmedY: " + this.vertice.getY() + "\n"
 				+ "\n"
 				+ "Vertices conectadas (" + this.numConectados + "): \n";
 		
-		for(Vertice vertice : vetVertice){
-			retorno += "Vertice " + vertice.getId() + "\tvetX: " + vertice.getX() + "\tvetY: " +vertice.getY() + "\tdistância: " + vertice.getDist() + "\n";
+		for(Vertice vertice : vertices){
+			retorno += "Vertice " + vertice.getId() + "\tvetX: " + vertice.getX() + "\tvetY: " +vertice.getY() + "\tdistï¿½ncia: " + vertice.getDist() + "\n";
 		}
 		
 		retorno += "\n\n\n";
@@ -39,38 +39,37 @@ public class Mediana {
 	public Vertice getVertice(){
 		return this.vertice;		
 	}
-	public double getFitnessLocal(){
-		return this.fitnessLocal;		
+	
+	public ArrayList<Vertice> getVertices(){
+		return vertices;
 	}
-	public double getFitnessLocalMedio(){
-		return this.fitnessLocalMedio;		
+	
+	public double getFitness(){
+		calcularFitness();
+		return this.fitness;		
 	}
+	
 	public double getNumConectados(){
 		return this.numConectados;		
 	}
 	
 	public void addVertice(Vertice vertice){
-		vetVertice.add(vertice);
+		vertices.add(vertice);
 		this.numConectados++;
-		calcularFitnessLocal();
-		this.fitnessLocalMedio = this.fitnessLocal / this.numConectados;
+		calcularFitness();
 	}
 	
 	public void excluiVertice(Vertice vertice){
-		vetVertice.remove(vertice);
+		vertices.remove(vertice);
 		this.numConectados--;
-		calcularFitnessLocal();
-		this.fitnessLocalMedio = this.fitnessLocal / this.numConectados;
+		calcularFitness();
 	}
 	
-	public void calcularFitnessLocal(){
-		this.fitnessLocal = 0;
-		for(Vertice vertice : this.vetVertice){
-			this.fitnessLocal += vertice.getDist();
+	private void calcularFitness(){
+		this.fitness = 0;
+		
+		for(Vertice vertice : this.vertices){
+			this.fitness += vertice.getDist();
 		}
-	}
-	
-	public ArrayList<Vertice> getVertices(){
-		return vetVertice;
 	}
 }
