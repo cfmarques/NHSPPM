@@ -82,4 +82,21 @@ public class PMediana implements Cloneable{
 		return pmediana;
 	}
 	
+	public Mediana excluirVerticeMediana(Vertice vertice){
+		for(Mediana mediana : this.medianas){
+			if(mediana.getVertice().getId() != vertice.getId() && mediana.getVertices().contains(vertice)){
+				System.out.println("Vertice " + vertice.getId() + " excluida da mediana " + mediana.getVertice().getId());
+				mediana.excluiVertice(vertice);
+				return mediana;
+			}
+		}
+		return null;
+	}
+	
+	public Mediana excluirVerticeMediana(Vertice vertice, Mediana mediana){
+		System.out.println("Vertice " + vertice.getId() + " excluida da mediana " + mediana.getVertice().getId());
+		mediana.excluiVertice(vertice);
+		return mediana;
+	}
+	
 }

@@ -69,19 +69,79 @@ public class SolucaoFM extends Solucao{
 
 			if(!vertice.getRefMelhor().getMed()){
 				vertice.getRefMelhor().setMed(true);
+				
 				refMelhor = new Mediana(vertice.getRefMelhor());
+				refMelhor.getVertice().setRefMelhor(refMelhor.getVertice());
+				refMelhor.getVertice().setDistancia(0);
+				refMelhor.addVertice(refMelhor.getVertice());
+				
+				Mediana medianaVerticeExcluida = PM.excluirVerticeMediana(refMelhor.getVertice());
+				
+				if(medianaVerticeExcluida != null && medianaVerticeExcluida.getVertices().size() == 1){
+					PM.getMedianas().remove(medianaVerticeExcluida);
+					PM.setNumMed(PM.getMedianas().size());
+					medianaVerticeExcluida.getVertice().setMed(false);
+					medianaVerticeExcluida.getVertice().escolheMediana(PM.getMedianas());
+				}
+				
 				refMelhor.addVertice(vertice);
 				PM.getMedianas().add(refMelhor);
 
 			}else {
 				for(Mediana mediana : PM.getMedianas()){
 					if(mediana.getVertice().getId() == vertice.getRefMelhor().getId()){
-						refMelhor = mediana;
-						refMelhor.addVertice(vertice);
+						if(!mediana.getVertices().contains(vertice)){
+							refMelhor = mediana;
+							refMelhor.addVertice(vertice);
+						}
+						
 					}					
 				}				
 			}
 		}
+		
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////// TESTE //////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		ArrayList<String> verticeMediana = new ArrayList<String>();
+		int count = 0;
+		int quantidadeVertices = 0;
+		
+		for(Mediana mediana : PM.getMedianas()){
+			quantidadeVertices += mediana.getVertices().size();
+			for(Vertice vertice : mediana.getVertices()){
+				count++;
+				
+				if(vertice.getMed() && vertice.getId() != mediana.getVertice().getId()){
+					verticeMediana.add(String.valueOf(vertice.getId()));
+				}
+			}
+		}
+		
+		for(String id : verticeMediana){
+			System.out.println("Vertice mediana sendo vertice de uma outra mediana!  ID: " + id);
+			
+			for(Mediana mediana : PM.getMedianas()){
+				if(mediana.getVertice().getId() == Integer.parseInt(id)){
+					System.out.println("Tamanho da mediana corrompida: " + mediana.getVertices().size());
+					
+					for(Vertice vertice : mediana.getVertices()){
+						System.out.println("- " + vertice.getId());
+					}
+				}
+			}
+		}
+		
+		System.out.println("Valor total da contagem: " + count);
+		
+		
+		System.out.println("Valor total de vertices: " + quantidadeVertices + "\tValor total de medianas: " + PM.getMedianas().size());
+		
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////// TESTE //////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
 		PM.setNumMed(PM.getMedianas().size());
 	}
 
@@ -109,8 +169,8 @@ public class SolucaoFM extends Solucao{
 					break;
 				}
 
-				ArrayList<Mediana> medianasAux = (ArrayList<Mediana>)PM.getMedianas().clone();
-				Vertice antigaMediana = medianaEscolhida.getVertice();
+				ArrayList<Mediana> medianasAux = (ArrayList<Mediana>)PM.getMedianas().clone(); //Novo arrayList mas as vertices são todas referencias da PM.medianas
+				Vertice antigaMediana = medianaEscolhida.getVertice(); //antigaMediana é um referencia da PM.mediana com o menor fitness medio
 
 				for(Mediana mediana : medianasAux){
 					if(mediana.getVertice().getId() == antigaMediana.getId()){

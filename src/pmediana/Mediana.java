@@ -60,9 +60,11 @@ public class Mediana {
 	}
 	
 	public void excluiVertice(Vertice vertice){
-		vertices.remove(vertice);
-		this.numConectados--;
-		calcularFitness();
+		if(vertices.contains(vertice)){
+			vertices.remove(vertice);
+			this.numConectados--;
+			calcularFitness();
+		}
 	}
 	
 	private void calcularFitness(){

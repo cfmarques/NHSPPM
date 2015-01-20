@@ -42,6 +42,9 @@ public class Principal {
 		int[] medianasDesejadas2 = {272, 150, 100, 50, 20, 10, 5};
 		objSolucao.setMedianasDesejadas(818, medianasDesejadas2);
 		
+		int[] medianasDesejadas3 = {10, 5};
+		objSolucao.setMedianasDesejadas(12, medianasDesejadas3);
+		
 		objSolucao.setVariacao("Menor");
 		
 		objSolucao.start();

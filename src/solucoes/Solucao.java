@@ -26,7 +26,7 @@ public abstract class Solucao {
 	public abstract void setVariacao(String variacao);
 
 	public final void setArquivosCoordenadas(){
-		String dir = Paths.get("Coordenadas").toAbsolutePath().toString();
+		String dir = Paths.get("Coordenadas/").toAbsolutePath().toString();
 		this.arquivosCoordenadas = new File(dir).listFiles();
 	}
 
