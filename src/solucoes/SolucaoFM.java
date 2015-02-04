@@ -9,7 +9,7 @@ import pmediana.Mediana;
 import pmediana.PMediana;
 import pmediana.Vertice;
 
-public class SolucaoFM extends Solucao{
+public class SolucaoFM implements Solucao{
 	private String variacao = null; //Maior ou Menor
 
 	public SolucaoFM(){

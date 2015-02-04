@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+
 import pmediana.Vertice;
+import solucoes.Solucao;
 
 
 public class Problema {
@@ -11,7 +13,13 @@ public class Problema {
 	
 	public Problema(ArrayList<Vertice> vertices, int[] medianasDesejadas){
 		this.vertices = vertices;
-		this.medianasDesejadas = medianasDesejadas.;
+		this.medianasDesejadas = medianasDesejadas;
+	}
+	
+	public ArrayList<Resultado> solucionarProblema(Solucao solucao){
+		solucao.gerarSolucao(this.vertices, medianasDesejadas);
+		
+		return this.resultados;
 	}
 
 }
