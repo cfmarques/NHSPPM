@@ -22,16 +22,17 @@ public class Mediana {
 		this.addVertice(vertice);
 	}
 	
-	public Vertice getVertice(){
-		return this.vertice;		
-	}
+	/*public Vertice getVertice(){
+		return this.vertice;
+	}*/
 	
 	/*public void setVertice(Vertice vertice){
 		this.vertice = vertice;		
 	}*/
 	
-	public ArrayList<Vertice> getVertices(){
-		return vertices;
+	public Vertice[] getVertices(){
+		Vertice[] vertices = new Vertice[this.vertices.size()]; 
+		return this.vertices.toArray(vertices);
 	}
 	
 	/*public void setVertices(ArrayList<Vertice> vertices){

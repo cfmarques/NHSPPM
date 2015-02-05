@@ -14,7 +14,8 @@ public class Vertice {
 	private int id, x, y;
 	private double dist;
 	private boolean med;
-	private Vertice refMelhor;
+	/*private Vertice refMelhor;*/
+	private Mediana refMelhor;
 	
 	public Vertice(){
 		this.x = 0;
@@ -40,7 +41,7 @@ public class Vertice {
 		this.dist = dist;
 	}
 	
-	public void setRefMelhor(Vertice refMelhor){
+	public void setRefMelhor(Mediana refMelhor){
 		this.refMelhor = refMelhor;
 	}
 	
@@ -64,7 +65,7 @@ public class Vertice {
 		return this.id;		
 	}
 	
-	public Vertice getRefMelhor(){
+	public Mediana getRefMelhor(){
 		return this.refMelhor;
 	}
 	

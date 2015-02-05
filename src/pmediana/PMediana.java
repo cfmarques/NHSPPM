@@ -25,8 +25,9 @@ public class PMediana implements Cloneable{
 		this.vertices = vertices;
 	}*/
 	
-	public ArrayList<Vertice> getVertices(){
-		return this.vertices;
+	public Vertice[] getVertices(){
+		Vertice[] vertices = new Vertice[this.vertices.size()];
+		return this.vertices.toArray(vertices);
 	}
 	
 	/*public void setMedianas(ArrayList<Mediana> mediana){
