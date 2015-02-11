@@ -9,6 +9,7 @@ public class Mediana {
 	 *  @fitness - Variável double que representa a potuação da mediana
 	 *  @numConectados - Variável int que representa o número de conectados na mediana
 	 */
+	private PMediana PMedianaPertencente;
 	private Vertice vertice;
 	private ArrayList<Vertice> vertices;
 	private int numConectados;
@@ -17,14 +18,19 @@ public class Mediana {
 	public Mediana (Vertice vertice){
 		this.fitness = 0;
 		this.numConectados = 0;
+		
 		this.vertice = vertice;
+		this.vertice.setMed(true);
+		this.vertice.setMelhorRef(this);
+		this.vertice.setDistancia(0);
+		
 		this.vertices = new ArrayList<Vertice>();
 		this.addVertice(vertice);
 	}
 	
-	/*public Vertice getVertice(){
+	public Vertice getVertice(){
 		return this.vertice;
-	}*/
+	}
 	
 	/*public void setVertice(Vertice vertice){
 		this.vertice = vertice;		
@@ -48,29 +54,61 @@ public class Mediana {
 		return this.numConectados;		
 	}
 	
-	public void addVertice(Vertice vertice){
+	public void addVertice(Vertice vertice){		
 		if(!vertices.contains(vertice)){
 			vertices.add(vertice);
 			this.numConectados++;
-			this.fitness += vertice.getDist();
+			
+			double antigoFitness = this.fitness;
+			double novoFitness = this.fitness + vertice.getDist();
+			
+			/*Gambiarra para atualizar o fitness*/
+			if(this.PMedianaPertencente != null){
+				this.PMedianaPertencente.atualizarFitness(antigoFitness, novoFitness);
+			}
+			
+			this.fitness = novoFitness;
+			
+			vertice.setMelhorRef(this);
 		}
 	}
 	
-	public void excluiVertice(Vertice vertice){
+	public void removerVertice(Vertice vertice){
 		if(vertices.contains(vertice)){
 			vertices.remove(vertice);
 			this.numConectados--;
-			this.fitness -= vertice.getDist();
+
+			double antigoFitness = this.fitness;
+			double novoFitness = this.fitness - vertice.getDist();
+			
+			/*Gambiarra para atualizar o fitness*/
+			if(this.PMedianaPertencente != null){
+				this.PMedianaPertencente.atualizarFitness(antigoFitness, novoFitness);
+			}
+			
+			this.fitness = novoFitness;
+			
+			vertice.setMelhorRef(null);
+			
+			if(vertice.getId() == this.vertice.getId()){
+				this.vertice = null;
+			}
 		}
 	}
 	
-	/*private void calcularFitness(){
-		this.fitness = 0;
+	public double calcularFitness(){
+		double fitness = 0;
 		
 		for(Vertice vertice : this.vertices){
-			this.fitness += vertice.getDist();
+			fitness += vertice.getDist();
 		}
-	}*/
+		
+		return fitness;
+	}
+	
+	public void setPMedianaPertencente(PMediana pmediana){
+		this.PMedianaPertencente = pmediana;
+	}
 	
 	public String toString(){
 		String retorno;

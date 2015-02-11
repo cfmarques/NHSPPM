@@ -1,6 +1,7 @@
 package pmediana;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Vertice {
 	/** Declaração de variáveis
@@ -15,14 +16,14 @@ public class Vertice {
 	private double dist;
 	private boolean med;
 	/*private Vertice refMelhor;*/
-	private Mediana refMelhor;
+	private Mediana melhorRef;
 	
 	public Vertice(){
 		this.x = 0;
 		this.y = 0;
 		this.id = 0;
 		this.med = false;
-		this.refMelhor = null;
+		this.melhorRef = null;
 	}
 	
 	public Vertice(int id, int x, int y){
@@ -30,7 +31,7 @@ public class Vertice {
 		this.y = y;
 		this.id = id;
 		this.med = false;
-		this.refMelhor = null;
+		this.melhorRef = null;
 	}
 	
 	public void setMed(boolean med){
@@ -41,8 +42,8 @@ public class Vertice {
 		this.dist = dist;
 	}
 	
-	public void setRefMelhor(Mediana refMelhor){
-		this.refMelhor = refMelhor;
+	public void setMelhorRef(Mediana refMelhor){
+		this.melhorRef = refMelhor;
 	}
 	
 	public boolean getMed(){
@@ -66,14 +67,14 @@ public class Vertice {
 	}
 	
 	public Mediana getRefMelhor(){
-		return this.refMelhor;
+		return this.melhorRef;
 	}
 	
-	public void escolheMediana(ArrayList<Mediana> vetMediana){
-		System.out.println("Quantidade de medianas: " + vetMediana.size());
+	public void escolherMediana(ArrayList<Mediana> vetMediana){
+		/*System.out.println("Quantidade de medianas: " + vetMediana.size());*/
 		
 		double distancia = 0, distanciaTemp = 0;
-		Vertice refMelhor = null;
+/*		Vertice refMelhor = null;*/
 		Mediana medianaEscolhida = null;
 		boolean primeiroValor = true;
 		
@@ -94,22 +95,27 @@ public class Vertice {
 
 			if(primeiroValor){
 				distancia = distanciaTemp;
-				refMelhor = vertice;
+				/*refMelhor = vertice;*/
 				medianaEscolhida = mediana;
 				primeiroValor = false;
 				
 			}else if(distanciaTemp < distancia){
 				distancia = distanciaTemp;
-				refMelhor = vertice;
+				/*refMelhor = vertice;*/
 				medianaEscolhida = mediana;
 				
 			}
 		}
 		
-		this.refMelhor = refMelhor;
+		this.melhorRef = medianaEscolhida;
 		this.dist = distancia;
 		
-		if(!medianaEscolhida.getVertices().contains(this)){
+		Vertice[] medianaEscolhidaVertices = medianaEscolhida.getVertices();
+		
+		ArrayList<Vertice> arrayListVerticesMedianaEscolhida = new ArrayList<Vertice>();
+		arrayListVerticesMedianaEscolhida.addAll(Arrays.asList(medianaEscolhidaVertices));
+		
+		if(!arrayListVerticesMedianaEscolhida.contains(this)){
 			medianaEscolhida.addVertice(this);
 		}
 	}
