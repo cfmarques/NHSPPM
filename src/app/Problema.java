@@ -42,7 +42,7 @@ public class Problema {
 	public void exibirResultados(){
 		String cabecalho =	"Resultado para conjunto de vertices de " + this.numVertices + " vertices" + "\n" +
 							"------------------------------------------------------------" + "\n" +
-							"Nome da Solução aplicada: " + this.solucaoAplicada.getClass().getSimpleName() + " (" + this.solucaoAplicada.getCritDesempate() + ")";
+							"Nome da Solução aplicada: " + this.solucaoAplicada.getClass().getSimpleName() + " (" + this.solucaoAplicada.getVariacao() + ")";
 		
 		System.out.println(cabecalho);
 		

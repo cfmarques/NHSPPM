@@ -51,7 +51,7 @@ public class Resultado {
 		
 		/*texto = "Resultado para conjunto de vertices de " + this.numVertices + " vertices" + "\n" +
 				"------------------------------------------------------------" + "\n" +
-				"Nome da Solução aplicada: " + this.SolucaoAplicada.getClass().getSimpleName() + " (" + this.SolucaoAplicada.getCritDesempate() + ") \n" +
+				"Nome da Solução aplicada: " + this.SolucaoAplicada.getClass().getSimpleName() + " (" + this.SolucaoAplicada.getVariacao() + ") \n" +
 				"Nº Medianas: " + this.numMedianas + "\n" +
 				"Fitness: " + this.fitness + "\n" +
 				"Tempo de execução: " + this.tempoExecucao;*/ 

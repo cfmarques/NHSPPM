@@ -15,10 +15,10 @@ public class SolucaoFM implements Solucao{
 		super();
 	}
 	
-	public SolucaoFM(String critDesempate){
+	public SolucaoFM(String variacao){
 		super();
 		
-		this.variacao = critDesempate;
+		this.variacao = variacao;
 	}
 
 	@Override
