@@ -15,7 +15,6 @@ public class Vertice {
 	private int id, x, y;
 	private double dist;
 	private boolean med;
-	/*private Vertice refMelhor;*/
 	private Mediana melhorRef;
 	
 	public Vertice(){

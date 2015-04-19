@@ -3,102 +3,166 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import pmediana.Vertice;
-import solucao.SolucaoFM;
+import solucao.Solucao;
+import distribuicaoMedianasIniciais.DistribuidorDeMedianasIniciais;
 
 public class Principal {
-	/*private static String[] classesSolucoes = {"SolucaoFM", "SolucaoNC"};*/
-	/*private static ArrayList<Solucao> solucoes = new ArrayList<Solucao>();*/
-	private static ArrayList<Problema> problemas = new ArrayList<Problema>();
+	private static String[] solucoes = {"solucao.SolucaoMenorFitnessMedio", "solucao.SolucaoMaiorFitnessMedio",
+		"solucao.SolucaoMenorNumeroConexoes", "solucao.SolucaoMaiorNumeroConexoes"};
+	private static String[] VariacoesSolucoes = {"menorFitness", "maiorFitness"};
+	private static String[] distribuicoesIniciais = {"distribuicaoMedianasIniciais.VizinhoMaisProximoSequencial", "distribuicaoMedianasIniciais.VizinhoMaisProximoAleatorio"};
+	private static int[][] medianasDesejadas = {{108, 50, 20, 10, 5},{272, 150, 100, 50, 20, 10, 5}};
+	private static int posicaoColunaXLS = 3;
+	private static Map<String, String[]> medianasDoMelhorResultadoAleatorio = new HashMap<String, String[]>();
 
 	/** Declares variables
 	 *  @PM - variable PMediana
 	 *  @vetVertices - ArrayList Vertices
 	 */
 
-	public static void main (String args[]){
-		String dir = Paths.get("Coordenadas/").toAbsolutePath().toString();
-		/*File[] arquivosCoordenadas = new File(dir).listFiles();*/
-		File arquivoCoordenadas = new File(dir + "/324.txt"); /*818.txt, 324.txt*/
-		int[] medianasDesejadas = {108, 50, 20, 10, 5};
-		
-		ArrayList<Vertice> vertices = carregarArquivoVertices(arquivoCoordenadas);
-
-		Problema problema = new Problema(vertices, medianasDesejadas);
-		problema.solucionarProblema(new SolucaoFM("Maior"));
-
-		System.out.print("\n");
-		problema.exibirResultados();
-
-		/*for(File arquivo : arquivosCoordenadas){
-			if(arquivo.getName().equalsIgnoreCase("818.txt")){
-				ArrayList<Vertice> vertices = carregarArquivoVertices(arquivo);
-				int[] medianasDesejadas = {272, 150, 100, 50, 20, 10, 5};
-
-				Problema problema = new Problema(vertices, medianasDesejadas);
-				problema.solucionarProblema(new SolucaoFM("Menor"));
-
-				problema.exibirResultados();
-
-				Principal.problemas.add(problema);
-			}
-		}*/
-
-		/*
-		for(String solucao : classesSolucoes){
-			try {
-				Solucao objSolucao = (Solucao)Class.forName(solucao).newInstance();
-				objSolucao.start();
-
-				solucoes.add(objSolucao);
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}  
-		}
+	public static void main (String args[]) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+		/* 
+		 * Pega os nomes dos arquivos de coordenadas que estão na pasta "coordenadas/"
 		 */
-		/*Solucao objSolucao = new SolucaoFM();
-
-		int[] medianasDesejadas1 = {108, 50, 20, 10, 5};
-		objSolucao.setMedianasDesejadas(324, medianasDesejadas1);
-
-		int[] medianasDesejadas2 = {272, 150, 100, 50, 20, 10, 5};
-		objSolucao.setMedianasDesejadas(818, medianasDesejadas2);
-
-		int[] medianasDesejadas3 = {10, 5};
-		objSolucao.setMedianasDesejadas(12, medianasDesejadas3);
-
-		objSolucao.setVariacao("Menor");
-
-		objSolucao.start();
-
-		System.out.println("Foram encontrado " + objSolucao.getResultado().size() + " resultados");
-
-		for(int i = 1; i <= objSolucao.getResultado().size(); i++){
-			System.out.println("Foram encontrados no " + i + "º resultado " + objSolucao.getResultado().get(i - 1).size() + " resultados");
-
-			for(int j = 1; j <= objSolucao.getResultado().get(i - 1).size(); j++){
-				System.out.println("Fitness: " + objSolucao.getResultado().get(i - 1).get(j - 1).getFitness());
-				System.out.println("Número de medianas: " + objSolucao.getResultado().get(i - 1).get(j - 1).getNumMed());
+		String dirArquivosCorredenadas = Paths.get("Coordenadas/").toAbsolutePath().toString();
+		File[] arquivosCoordenadas = new File(dirArquivosCorredenadas).listFiles();
+		
+		/* 
+		 * Para cada arquivo de coordenadas irá realizar os calculos para solucionar o problema da PMediana em diversos cenários 
+		 * (Distribuições de medianas iniciais, soluções e variações de soluções) 
+		 */
+		for(int i = 0; i < arquivosCoordenadas.length; i++){		
+			for(String distribuicaoInicial : distribuicoesIniciais){
+				DistribuidorDeMedianasIniciais distribuidorDeMedianasIniciaisUtilizado =  (DistribuidorDeMedianasIniciais) Class.forName(distribuicaoInicial).newInstance();
+								
+				if(distribuicaoInicial.equalsIgnoreCase("distribuicaoMedianasIniciais.VizinhoMaisProximoAleatorio")){
+					exeuctarSolucoes(arquivosCoordenadas[i], medianasDesejadas[i], distribuidorDeMedianasIniciaisUtilizado, 10);
+					
+				}else {
+					exeuctarSolucoes(arquivosCoordenadas[i], medianasDesejadas[i], distribuidorDeMedianasIniciaisUtilizado, 1);
+				}
 			}
-		}*/
+		}
+		
+		salvarMelhoresResultados();
+	}
+
+	private static void exeuctarSolucoes(File arquivoCoordenada, int[] medianasDesejadas, 
+			DistribuidorDeMedianasIniciais distribuidorDeMedianasIniciaisUtilizado, int qntVezes) {
+		
+		for(String solucao : solucoes){
+			for(int i = 0; i < qntVezes; i++){
+				
+				if(solucao.equalsIgnoreCase("solucao.SolucaoMenorNumeroConexoes") ||
+						solucao.equalsIgnoreCase("solucao.SolucaoMaiorNumeroConexoes")){
+
+					for(String variacao : VariacoesSolucoes){
+						exeuctarSolucao(arquivoCoordenada, medianasDesejadas, distribuidorDeMedianasIniciaisUtilizado, solucao, variacao);
+					}
+				}else {
+					exeuctarSolucao(arquivoCoordenada, medianasDesejadas, distribuidorDeMedianasIniciaisUtilizado, solucao, "");
+				}
+			}
+		}
+	}
+	
+	private static void exeuctarSolucao(File arquivosCoordenadas, int[] medianasDesejadas, 
+			DistribuidorDeMedianasIniciais distribuidorDeMedianasIniciaisUtilizado, String solucao, String variacao) {
+
+		/* 
+		 * Carrega as vertices do arquivo de coordenadas.
+		 */
+		ArrayList<Vertice> vertices = carregarArquivoVertices(arquivosCoordenadas);		
+		Problema problema = new Problema(vertices, medianasDesejadas);
+
+		try {
+			@SuppressWarnings("unchecked")
+			Class<Solucao> clazz = (Class<Solucao>) Class.forName(solucao);
+			Solucao solucaoAplicada = null;
+			Constructor<Solucao> constructor = null;
+
+			if(variacao != null && !variacao.equalsIgnoreCase("")){
+				constructor = clazz.getConstructor(String.class);
+				solucaoAplicada = constructor.newInstance(variacao);
+			}else {
+				constructor = clazz.getConstructor();
+				solucaoAplicada = constructor.newInstance();
+			}
+
+			problema.solucionarProblema(solucaoAplicada, distribuidorDeMedianasIniciaisUtilizado);
+			
+			if(distribuidorDeMedianasIniciaisUtilizado.getClass().getName().equalsIgnoreCase("distribuicaoMedianasIniciais.VizinhoMaisProximoAleatorio")){
+				for(Resultado resultado : problema.getResultados()){
+					String dirResultadosTxt = Paths.get("Resultados TXT/").toAbsolutePath().toString();
+					String nomeArquivoResultadoTxt = solucaoAplicada.getAbreviacao() + " " + resultado.getNumVertices() + "x" + resultado.getNumMedianas();
+					File resultadoTxt = new File(dirResultadosTxt, nomeArquivoResultadoTxt + ".txt");
+					PrintWriter saida = new PrintWriter(new FileWriter(resultadoTxt, true));
+					
+					saida.println(resultado);
+					
+					saida.close();
+					
+					if(medianasDoMelhorResultadoAleatorio.get(nomeArquivoResultadoTxt) == null){
+						String[] resultados = {resultado.exibirMedianas(), "" + resultado.getFitness()};
+						medianasDoMelhorResultadoAleatorio.put(nomeArquivoResultadoTxt, resultados);
+						
+					}else {
+						String[] resultados = medianasDoMelhorResultadoAleatorio.get(nomeArquivoResultadoTxt);
+						
+						if(Double.parseDouble(resultados[1]) > resultado.getFitness()){
+							resultados[0] = resultado.exibirMedianas();
+							resultados[1] = "" + resultado.getFitness();
+							
+							medianasDoMelhorResultadoAleatorio.put(nomeArquivoResultadoTxt, resultados);
+						}
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static void salvarMelhoresResultados() {
+		Set<String> arquivosComResultados = medianasDoMelhorResultadoAleatorio.keySet();
+		
+		for(String arquivoComResultado : arquivosComResultados){
+			try {
+				String[] resultados = medianasDoMelhorResultadoAleatorio.get(arquivoComResultado);
+				
+				String dirResultadosTxt = Paths.get("Resultados TXT/").toAbsolutePath().toString();
+				String nomeArquivoResultadoTxt = arquivoComResultado;
+				File resultadoTxt = new File(dirResultadosTxt, nomeArquivoResultadoTxt + ".txt");
+				PrintWriter saida = new PrintWriter(new FileWriter(resultadoTxt, true));
+				
+				String fitness = resultados[1].replace(".", ",");
+				saida.print("\n" + resultados[0] + "\n" + fitness);
+				
+				saida.close();
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private static ArrayList<Vertice> carregarArquivoVertices(File arquivo){
 		ArrayList<Vertice> vertices = new ArrayList<Vertice>();
 		BufferedReader buffRead = null;
 
-		/*System.out.println(arquivo.getName());*/
 		vertices.clear();
 
 		try {
@@ -109,7 +173,6 @@ public class Principal {
 			System.out.print("Erro na localização do arquivo: " + e.getMessage());
 		}
 
-		// Realiza a Leitura das linhas do arquivo de coordenadas
 		try {
 			String linha = "", coordenadas[];
 			boolean primeiraLinha = true;
@@ -147,10 +210,7 @@ public class Principal {
 			e.printStackTrace();
 			System.out.print("Erro na leitura do arquivo: " + e.getMessage());
 		}
+		
 		return vertices;
-	}
-
-	private static void gerarRelatorio(){
-
 	}
 }
