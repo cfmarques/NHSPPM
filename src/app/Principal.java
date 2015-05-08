@@ -20,11 +20,10 @@ import distribuicaoMedianasIniciais.DistribuidorDeMedianasIniciais;
 
 public class Principal {
 	private static String[] solucoes = {"solucao.SolucaoMenorFitnessMedio", "solucao.SolucaoMaiorFitnessMedio",
-		"solucao.SolucaoMenorNumeroConexoes", "solucao.SolucaoMaiorNumeroConexoes"};
+		"solucao.SolucaoMenorNumeroConexoes", "solucao.SolucaoMaiorNumeroConexoes", "solucao.SolucaoMenorNumeroConexoes2"};
 	private static String[] VariacoesSolucoes = {"menorFitness", "maiorFitness"};
-	private static String[] distribuicoesIniciais = {"distribuicaoMedianasIniciais.VizinhoMaisProximoSequencial", "distribuicaoMedianasIniciais.VizinhoMaisProximoAleatorio"};
+	private static String[] distribuicoesIniciais = {/*"distribuicaoMedianasIniciais.VizinhoMaisProximoSequencial", */"distribuicaoMedianasIniciais.VizinhoMaisProximoAleatorio"};
 	private static int[][] medianasDesejadas = {{108, 50, 20, 10, 5},{272, 150, 100, 50, 20, 10, 5}};
-	private static int posicaoColunaXLS = 3;
 	private static Map<String, String[]> medianasDoMelhorResultadoAleatorio = new HashMap<String, String[]>();
 
 	/** Declares variables
@@ -48,14 +47,13 @@ public class Principal {
 				DistribuidorDeMedianasIniciais distribuidorDeMedianasIniciaisUtilizado =  (DistribuidorDeMedianasIniciais) Class.forName(distribuicaoInicial).newInstance();
 								
 				if(distribuicaoInicial.equalsIgnoreCase("distribuicaoMedianasIniciais.VizinhoMaisProximoAleatorio")){
-					exeuctarSolucoes(arquivosCoordenadas[i], medianasDesejadas[i], distribuidorDeMedianasIniciaisUtilizado, 10);
+					exeuctarSolucoes(arquivosCoordenadas[i], medianasDesejadas[i], distribuidorDeMedianasIniciaisUtilizado, 10000);
 					
 				}else {
 					exeuctarSolucoes(arquivosCoordenadas[i], medianasDesejadas[i], distribuidorDeMedianasIniciaisUtilizado, 1);
 				}
 			}
 		}
-		
 		salvarMelhoresResultados();
 	}
 
@@ -66,7 +64,8 @@ public class Principal {
 			for(int i = 0; i < qntVezes; i++){
 				
 				if(solucao.equalsIgnoreCase("solucao.SolucaoMenorNumeroConexoes") ||
-						solucao.equalsIgnoreCase("solucao.SolucaoMaiorNumeroConexoes")){
+						solucao.equalsIgnoreCase("solucao.SolucaoMaiorNumeroConexoes") || 
+						solucao.equalsIgnoreCase("solucao.SolucaoMenorNumeroConexoes2")){
 
 					for(String variacao : VariacoesSolucoes){
 						exeuctarSolucao(arquivoCoordenada, medianasDesejadas, distribuidorDeMedianasIniciaisUtilizado, solucao, variacao);
@@ -135,7 +134,7 @@ public class Principal {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private static void salvarMelhoresResultados() {
 		Set<String> arquivosComResultados = medianasDoMelhorResultadoAleatorio.keySet();
 		

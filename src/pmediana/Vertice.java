@@ -73,7 +73,6 @@ public class Vertice {
 		/*System.out.println("Quantidade de medianas: " + vetMediana.size());*/
 		
 		double distancia = 0, distanciaTemp = 0;
-/*		Vertice refMelhor = null;*/
 		Mediana medianaEscolhida = null;
 		boolean primeiroValor = true;
 		
@@ -94,13 +93,11 @@ public class Vertice {
 
 			if(primeiroValor){
 				distancia = distanciaTemp;
-				/*refMelhor = vertice;*/
 				medianaEscolhida = mediana;
 				primeiroValor = false;
 				
 			}else if(distanciaTemp < distancia){
 				distancia = distanciaTemp;
-				/*refMelhor = vertice;*/
 				medianaEscolhida = mediana;
 				
 			}
@@ -116,6 +113,33 @@ public class Vertice {
 		
 		if(!arrayListVerticesMedianaEscolhida.contains(this)){
 			medianaEscolhida.addVertice(this);
+		}
+	}
+	
+	public void escolherMediana(Mediana mediana){
+		Vertice vertice = mediana.getVertice();
+		
+		int MedX = vertice.getX();
+		int MedY = vertice.getY();
+		
+		double difX = this.x - MedX;
+		double xAoQuadrado = Math.pow(difX, 2);
+		
+		double difY = this.y - MedY;
+		double yAoQuadrado = Math.pow(difY, 2);
+				
+		double distancia = Math.sqrt(xAoQuadrado + yAoQuadrado);
+		
+		this.melhorRef = mediana;
+		this.dist = distancia;
+		
+		Vertice[] medianaEscolhidaVertices = mediana.getVertices();
+		
+		ArrayList<Vertice> arrayListVerticesMedianaEscolhida = new ArrayList<Vertice>();
+		arrayListVerticesMedianaEscolhida.addAll(Arrays.asList(medianaEscolhidaVertices));
+		
+		if(!arrayListVerticesMedianaEscolhida.contains(this)){
+			mediana.addVertice(this);
 		}
 	}
 }
